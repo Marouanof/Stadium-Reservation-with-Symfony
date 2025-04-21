@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-50 to-purple-50 p-8">
+    <div class="bg-white p-8 rounded-lg shadow-lg text-center w-full max-w-md">
+        
+        <!-- Icone de connexion -->
+        <div class="flex justify-center mb-6">
+            <i class="fas fa-sign-in-alt text-4xl text-blue-500"></i>
+        </div>
+        
+        {% if error %}
+            <div class="bg-red-100 text-red-800 p-4 rounded-lg mb-4">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+
+        {% if app.user %}
+            <div class="mb-3 text-green-600">
+                <p>You are logged in as {{ app.user.userIdentifier }}.</p>
+                <a href="{{ path('app_logout') }}" class="text-blue-500 hover:text-blue-700">Logout</a>
+            </div>
+        {% endif %}
+
+        <h1 class="text-2xl font-semibold text-blue-700 mb-4">Please sign in</h1>
+
+        <!-- Formulaire de connexion -->
+        <form method="post" class="space-y-4">
+            <div class="mb-4">
+                <label for="inputEmail" class="block text-left text-gray-700">Email</label>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" autocomplete="email" required autofocus>
+            </div>
+
+            <div class="mb-4">
+                <label for="inputPassword" class="block text-left text-gray-700">Password</label>
+                <input type="password" name="password" id="inputPassword" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" autocomplete="current-password" required>
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <button type="submit" class="w-full py-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-300">
+                Sign in
+            </button>
+        </form>
+
+        <div class="mt-4 text-gray-600">
+            <p>Don't have an account? <a href="{{ path('app_register') }}" class="text-blue-500 hover:text-blue-700">Sign up</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

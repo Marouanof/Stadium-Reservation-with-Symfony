@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier l'utilisateur{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-gradient-to-r from-blue-50 to-purple-50 p-8">
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">Modifier l'utilisateur</h1>
+
+    {{ form_start(form) }}
+        <div class="space-y-4">
+            {{ form_widget(form) }}
+        </div>
+        
+        <!-- Bouton Enregistrer avec icône -->
+        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 mt-4 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v18h14V3H5z" />
+            </svg>
+            Enregistrer
+        </button>
+    {{ form_end(form) }}
+
+    <!-- Retour à la liste des utilisateurs avec icône -->
+    <a href="{{ path('app_admin_users') }}" class="mt-6 inline-block bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-300 flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Retour à la liste des utilisateurs
+    </a>
+</div>
+{% endblock %}

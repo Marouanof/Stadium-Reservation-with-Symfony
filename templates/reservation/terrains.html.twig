@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Terrains disponibles{% endblock %}
+
+{% block body %}
+    <div class="min-h-screen bg-gradient-to-r from-blue-50 to-purple-50 p-8">
+        <div class="max-w-7xl mx-auto">
+            <h1 class="text-3xl font-bold text-blue-900 mb-8">Terrains disponibles à la réservation</h1>
+
+            {# Search Bar #}
+    <div class="mb-6">
+        <form method="GET" action="{{ path('app_terrains') }}" class="flex gap-2">
+            <div class="flex-1">
+                <input 
+                    type="search" 
+                    name="q" 
+                    value="{{ app.request.query.get('q') }}"
+                    placeholder="Rechercher un terrain..." 
+                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                >
+            </div>
+            <button 
+                type="submit" 
+                class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition flex items-center gap-2"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                Rechercher
+            </button>
+            {% if app.request.query.get('q') %}
+                <a 
+                    href="{{ path('app_terrains') }}" 
+                    class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition flex items-center gap-2"
+                >
+                    Réinitialiser
+                </a>
+            {% endif %}
+        </form>
+    </div>
+
+            {% if terrains is empty %}
+                <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-lg">
+                    Aucun terrain n'est disponible pour le moment.
+                </div>
+            {% else %}
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {% for terrain in terrains %}
+                        <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                            {% if terrain.image %}
+                                <div class="w-full h-48">
+                                    <img src="{{ vich_uploader_asset(terrain, 'imageFile') }}" 
+                                         alt="Image de {{ terrain.name }}" 
+                                         class="w-full h-full object-cover">
+                                </div>
+                            {% else %}
+                                <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+                                    <i class="fas fa-image text-gray-400 text-4xl"></i>
+                                </div>
+                            {% endif %}
+                            <div class="p-6">
+                                <h5 class="text-xl font-semibold text-gray-900 mb-2">
+                                    <i class="fas fa-map-marker-alt text-blue-500 mr-2"></i>{{ terrain.name }}
+                                </h5>
+                                <p class="text-gray-600 mb-4">
+                                    <span class="font-medium">Adresse:</span> <i class="fas fa-location-arrow text-gray-500 mr-2"></i>{{ terrain.adresse }}<br>
+                                    <span class="font-medium">Surface:</span> <i class="fas fa-arrows-alt-h text-gray-500 mr-2"></i>{{ terrain.surface }} m²<br>
+                                    <span class="font-medium">Prix:</span> <i class="fas fa-euro-sign text-gray-500 mr-2"></i>{{ terrain.prix }}€/heure
+                                </p>
+                                <a href="{{ path('app_reservation_new', {'terrainId': terrain.id}) }}" 
+                                   class="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300">
+                                    <i class="fas fa-calendar-check mr-2"></i>Réserver ce terrain
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="mt-8">
+                <a href="{{ path('app_user_dashboard') }}" 
+                   class="inline-block bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300">
+                    <i class="fas fa-arrow-left mr-2"></i>Retour au tableau de bord
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

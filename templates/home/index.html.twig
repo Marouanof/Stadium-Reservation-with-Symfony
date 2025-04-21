@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+    <!-- Section promotionnelle en haut, juste après le header -->
+    <div class="bg-blue-500 text-white py-12">
+        <div class="text-center">
+            <h2 class="text-3xl font-bold mb-4">Réservez votre terrain dès maintenant!</h2>
+            <p class="text-lg mb-6">Profitez de nos terrains de sport modernes pour vos événements ou vos entraînements. Réservez dès maintenant pour garantir votre créneau.</p>
+            <a href="{{ path('app_login') }}" class="bg-yellow-500 text-blue-800 font-semibold py-2 px-6 rounded-lg shadow-md hover:bg-yellow-600 transition duration-300">Réserver maintenant</a>
+        </div>
+        <div class="mt-8 flex justify-center">
+            <img src="https://img.leboncoin.fr/api/v1/lbcpb1/images/81/ef/65/81ef655a61b39e3dbaa87d76aa5d1bd2fad20ea3.jpg?rule=ad-large" alt="Réservez un terrain" class="rounded-lg shadow-xl w-80 h-48 object-cover">
+        </div>
+    </div>
+
+    <div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-50 to-green-50">
+        <div class="bg-white p-8 rounded-lg shadow-lg text-center w-full max-w-3xl">
+            <h1 class="text-3xl font-bold mb-6 text-blue-700 flex items-center justify-center">
+                <i class="fas fa-map-marker-alt text-yellow-500 mr-2"></i> Derniers Terrains Ajoutés
+            </h1>
+
+            {% if terrains is not empty %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {% for terrain in terrains %}
+                        <div class="border-2 border-blue-300 rounded-lg p-4 shadow-md bg-gradient-to-b from-white to-blue-50">
+                            {% if terrain.image %}
+                                <div class="mb-4">
+                                    <img src="{{ vich_uploader_asset(terrain, 'imageFile') }}" 
+                                         alt="Image de {{ terrain.name }}" 
+                                         class="w-full h-48 object-cover rounded-lg shadow-sm">
+                                </div>
+                            {% else %}
+                                <div class="mb-4">
+                                    <div class="w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-image text-gray-400 text-4xl"></i>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <h2 class="text-lg font-semibold text-blue-800">{{ terrain.name }}</h2>
+                            <p class="text-gray-700">Adresse : <span class="font-medium">{{ terrain.adresse }}</span></p>
+                            <p class="text-gray-900 mt-2">Surface : <span class="font-bold">{{ terrain.surface }} m²</span></p>
+                            <p class="text-gray-900">Prix : <span class="font-bold">{{ terrain.prix }} €</span></p>
+                            <p class="mt-4 flex items-center justify-center">
+                                <span class="text-sm px-3 py-1 rounded-full shadow-sm
+                                      {{ terrain.disponible ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                    <i class="fas {{ terrain.disponible ? 'fa-check-circle' : 'fa-times-circle' }} mr-2"></i>
+                                    {{ terrain.disponible ? 'Disponible' : 'Non disponible' }}
+                                </span>
+                            </p>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-gray-600 text-lg font-medium">Aucun terrain n'est disponible pour le moment.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

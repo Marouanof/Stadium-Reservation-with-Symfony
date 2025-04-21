@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer une réservation{% endblock %}
+
+{% block body %}
+    <div class="max-w-2xl mx-auto bg-white shadow-lg rounded-xl p-6 mt-10">
+        <h1 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+            <i data-lucide="calendar-plus" class="w-6 h-6 text-green-500"></i>
+            Créer une réservation
+        </h1>
+
+        <div class="mt-4">
+            {{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
+                <div class="space-y-4">
+                    <div class="flex flex-col space-y-2">
+                        <label for="date_debut" class="font-semibold text-gray-700">Date début</label>
+                        {{ form_widget(form.dateDebut, {'attr': {'class': 'w-full border border-gray-300 rounded-lg p-2'}}) }}
+                    </div>
+                    <div class="flex flex-col space-y-2">
+                        <label for="date_fin" class="font-semibold text-gray-700">Date fin</label>
+                        {{ form_widget(form.dateFin, {'attr': {'class': 'w-full border border-gray-300 rounded-lg p-2'}}) }}
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition">
+                    <i data-lucide="check-circle" class="w-5 h-5 inline-block mr-2"></i>
+                    Créer
+                </button>
+            {{ form_end(form) }}
+        </div>
+
+        <div class="mt-4 text-center">
+            <a href="{{ path('app_user_dashboard') }}" class="text-gray-600 hover:text-gray-800 flex items-center justify-center gap-2">
+                <i data-lucide="arrow-left-circle" class="w-5 h-5"></i>
+                Retour au tableau de bord
+            </a>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des utilisateurs{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-gradient-to-r from-blue-50 to-purple-50 py-10 px-4 md:px-8">
+    <!-- Titre de la page -->
+    <h1 class="text-3xl font-extrabold text-gray-800 mb-8">Gestion des utilisateurs</h1>
+
+    <!-- Bouton Ajouter un utilisateur avec icône -->
+    <a href="{{ path('app_admin_user_new') }}" 
+       class="mb-6 inline-block bg-green-500 text-white font-medium py-2 px-6 rounded-lg shadow hover:bg-green-600 hover:shadow-lg transition duration-300 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m7-7H5" />
+        </svg>
+        Ajouter un utilisateur
+    </a>
+
+    <!-- Tableau des utilisateurs -->
+    <div class="overflow-x-auto bg-white rounded-lg shadow-md">
+        <table class="w-full text-left">
+            <thead class="bg-gray-200 text-gray-800">
+                <tr>
+                    <th class="py-3 px-4 text-sm font-semibold">Email</th>
+                    <th class="py-3 px-4 text-sm font-semibold">Rôles</th>
+                    <th class="py-3 px-4 text-sm font-semibold">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                {% for user in users %}
+                <tr class="hover:bg-gray-50 transition">
+                    <td class="py-3 px-4 text-sm text-gray-800">{{ user.email }}</td>
+                    <td class="py-3 px-4 text-sm text-gray-800">
+                        {% set roles = user.roles|filter(role => role != 'ROLE_USER') %} {# Exclure ROLE_USER par défaut #}
+                        {{ roles|join(', ') }} {# Afficher les rôles restants #}
+                    </td>
+                    <td class="py-3 px-4 text-sm">
+                        <!-- Modifier un utilisateur avec icône -->
+                        <a href="{{ path('app_admin_user_edit', {'id': user.id}) }}" 
+                           class="text-blue-500 hover:text-blue-700 font-medium mr-4 transition flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 3l4 4m0 0l-3 3a9.73 9.73 0 00-3-1c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8c0-.716-.099-1.419-.293-2.071l3-3-4-4zm0 0L13 3a9.73 9.73 0 00-3 1C5.582 5 2 8.582 2 12s3.582 8 8 8 8-3.582 8-8c0-.716-.099-1.419-.293-2.071L21 7z"/>
+                            </svg>
+                            Modifier
+                        </a>
+                        <!-- Supprimer un utilisateur avec icône -->
+                        <form action="{{ path('app_admin_user_delete', {'id': user.id}) }}" method="POST" class="inline">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                            <button type="submit" 
+                                    class="text-red-500 hover:text-red-700 font-medium transition flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                                Supprimer
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bouton Retour au tableau de bord avec icône -->
+    <a href="{{ path('app_admin') }}" 
+       class="mt-8 inline-block bg-gray-500 text-white font-medium py-2 px-6 rounded-lg shadow hover:bg-gray-600 hover:shadow-md transition duration-300 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        Retour au tableau de bord
+    </a>
+</div>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques{% endblock %}
+
+{% block body %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-blue-700 mb-8">Statistiques</h1>
+
+    {# General Stats Cards #}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-blue-100 border-l-4 border-blue-500 rounded-lg shadow p-6">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-users text-blue-700 text-3xl mr-3"></i>
+                <h3 class="text-blue-700 text-sm font-medium">Total Utilisateurs</h3>
+            </div>
+            <p class="text-3xl font-bold text-blue-900">{{ stats.users }}</p>
+        </div>
+        <div class="bg-green-100 border-l-4 border-green-500 rounded-lg shadow p-6">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-map-marker-alt text-green-700 text-3xl mr-3"></i>
+                <h3 class="text-green-700 text-sm font-medium">Total Terrains</h3>
+            </div>
+            <p class="text-3xl font-bold text-green-900">{{ stats.terrains }}</p>
+        </div>
+        <div class="bg-yellow-100 border-l-4 border-yellow-500 rounded-lg shadow p-6">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-calendar-check text-yellow-700 text-3xl mr-3"></i>
+                <h3 class="text-yellow-700 text-sm font-medium">Total Réservations</h3>
+            </div>
+            <p class="text-3xl font-bold text-yellow-900">{{ stats.reservations }}</p>
+        </div>
+        <div class="bg-red-100 border-l-4 border-red-500 rounded-lg shadow p-6">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-check-circle text-red-700 text-3xl mr-3"></i>
+                <h3 class="text-red-700 text-sm font-medium">Terrains Disponibles</h3>
+            </div>
+            <p class="text-3xl font-bold text-red-900">{{ stats.disponible_terrains }}</p>
+        </div>
+    </div>
+
+    {# Detailed Stats #}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {# Most Active Users #}
+        <div class="bg-white border-l-4 border-purple-500 rounded-lg shadow p-6">
+            <h3 class="text-purple-700 text-xl font-bold mb-4">Utilisateurs les plus actifs</h3>
+            <div class="space-y-4">
+                {% for user in stats.active_users %}
+                    <div class="flex justify-between items-center bg-purple-50 p-2 rounded">
+                        <span class="text-purple-700">{{ user.email }}</span>
+                        <span class="font-bold text-purple-900">{{ user.reservationCount }} réservations</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {# Most Popular Terrains #}
+        <div class="bg-white border-l-4 border-orange-500 rounded-lg shadow p-6">
+            <h3 class="text-orange-700 text-xl font-bold mb-4">Terrains les plus populaires</h3>
+            <div class="space-y-4">
+                {% for terrain in stats.popular_terrains %}
+                    <div class="flex justify-between items-center bg-orange-50 p-2 rounded">
+                        <span class="text-orange-700">{{ terrain.name }}</span>
+                        <span class="font-bold text-orange-900">{{ terrain.reservationCount }} réservations</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {# Monthly Statistics #}
+        <div class="bg-white border-l-4 border-teal-500 rounded-lg shadow p-6 md:col-span-2">
+            <h3 class="text-teal-700 text-xl font-bold mb-4">Réservations mensuelles</h3>
+            <div class="space-y-4">
+                {% for stat in stats.monthly_stats %}
+                    <div class="flex justify-between items-center bg-teal-50 p-2 rounded">
+                        <span class="text-teal-700">{{ stat.month }}</span>
+                        <span class="font-bold text-teal-900">{{ stat.count }} réservations</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <a href="{{ path('app_admin') }}" 
+       class="mt-8 inline-block bg-gray-500 text-white font-medium py-2 px-6 rounded-lg shadow hover:bg-gray-600 hover:shadow-md transition duration-300">
+        Retour au tableau de bord
+    </a>
+</div>
+{% endblock %}

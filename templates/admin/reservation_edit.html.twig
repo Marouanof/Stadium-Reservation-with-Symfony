@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la réservation{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-gradient-to-r from-blue-50 to-purple-50 p-8">
+    <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-xl">
+        <h1 class="text-3xl font-semibold text-gray-800 mb-6">Modifier la réservation</h1>
+
+        {{ form_start(form) }}
+            <div class="space-y-4">
+                {{ form_widget(form) }}
+            </div>
+            <button type="submit" class="mt-4 w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out transform hover:scale-105">
+                Enregistrer
+            </button>
+        {{ form_end(form) }}
+
+        {# Retour à la liste des réservations avec icône et amélioration de style #}
+        <a href="{{ path('app_admin_reservation') }}" class="mt-6 inline-block bg-gray-500 text-white py-2 px-6 rounded-lg hover:bg-gray-600 transition duration-300 flex items-center justify-center transform hover:scale-105">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            Retour à la liste des réservations
+        </a>
+    </div>
+</div>
+{% endblock %}

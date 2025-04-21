@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un terrain{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-gray-100 p-8">
+    <h1 class="text-2xl font-bold mb-6">Ajouter un terrain</h1>
+
+    {# Formulaire d'ajout #}
+    {{ form_start(form, {'attr': {'class': 'bg-white p-6 rounded-lg shadow-md'}}) }}
+        <div class="space-y-4">
+            {# Champ Nom #}
+            <div>
+                {{ form_label(form.name, 'Nom du terrain', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                {{ form_widget(form.name, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'}}) }}
+                {{ form_errors(form.name) }}
+            </div>
+
+            {# Champ Adresse #}
+            <div>
+                {{ form_label(form.adresse, 'Adresse', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                {{ form_widget(form.adresse, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'}}) }}
+                {{ form_errors(form.adresse) }}
+            </div>
+
+            {# Champ Surface #}
+            <div>
+                {{ form_label(form.surface, 'Surface (m²)', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                {{ form_widget(form.surface, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'}}) }}
+                {{ form_errors(form.surface) }}
+            </div>
+
+            {# Champ Prix #}
+            <div>
+                {{ form_label(form.prix, 'Prix (€)', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                {{ form_widget(form.prix, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'}}) }}
+                {{ form_errors(form.prix) }}
+            </div>
+
+            {# Champ Disponible #}
+            <div>
+                {{ form_label(form.disponible, 'Disponible', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                {{ form_widget(form.disponible, {'attr': {'class': 'mt-1 rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500'}}) }}
+                {{ form_errors(form.disponible) }}
+            </div>
+
+            
+
+            {# Champ Image #}
+            <div>
+                {{ form_label(form.imageFile, 'Image du terrain', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                {{ form_widget(form.imageFile, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'}}) }}
+                {{ form_errors(form.imageFile) }}
+                {% if form.vars.value.image %}
+                    <div class="mt-2">
+                        <img src="{{ vich_uploader_asset(form.vars.value, 'imageFile') }}" alt="Preview" class="max-w-xs rounded shadow">
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {# Bouton Créer #}
+        <button type="submit" class="mt-6 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300">
+            Créer
+        </button>
+    {{ form_end(form) }}
+
+    {# Lien pour retourner à la liste des terrains #}
+    <a href="{{ path('app_admin_terrains') }}" class="mt-6 inline-block bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-300">
+        Retour à la liste des terrains
+    </a>
+</div>
+{% endblock %}

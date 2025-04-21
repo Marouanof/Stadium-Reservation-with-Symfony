@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord - {{ user.email }}{% endblock %}
+
+{% block body %}
+    <div class="min-h-screen bg-gradient-to-r from-blue-50 to-purple-50 p-8">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-4xl font-bold text-blue-900 mb-8">Tableau de bord</h1>
+            <p class="text-lg text-gray-700 mb-8">Bienvenue, <span class="font-semibold text-purple-600">{{ user.email }}</span> !</p>
+
+            <!-- Section "Mes terrains" -->
+            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+                <h2 class="text-2xl font-semibold text-blue-800 mb-4 flex items-center">
+                    <!-- Icône pour la section "Mes terrains" -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7l7 7-7 7m0-7h18"></path>
+                    </svg>
+                    Mes terrains
+                </h2>
+                <a href="{{ path('app_terrain_new') }}" class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 flex items-center">
+                    <!-- Icône pour créer un terrain -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Créer un terrain
+                </a>
+                {% if terrains is empty %}
+                    <p class="text-gray-600 mt-4">Aucun terrain trouvé.</p>
+                {% else %}
+                    <ul class="mt-4 space-y-4">
+                        {% for terrain in terrains %}
+                            <li class="bg-gray-50 p-4 rounded-lg shadow-sm">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <span class="text-lg font-medium text-gray-800">{{ terrain.name }}</span> - <span class="text-gray-600">{{ terrain.adresse }}</span>
+                                    </div>
+                                    <div class="space-x-2">
+                                        <a href="{{ path('app_terrain_edit', { id: terrain.id }) }}" class="text-yellow-600 hover:text-yellow-700 flex items-center">
+                                            <!-- Icône pour modifier un terrain -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 3l4 4m0 0l-10 10H3v-4L13 3z"></path>
+                                            </svg>
+                                            Modifier
+                                        </a>
+                                        <form action="{{ path('app_terrain_delete', { id: terrain.id }) }}" method="post" class="inline">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ terrain.id) }}">
+                                            <button type="submit" class="text-red-600 hover:text-red-700 flex items-center" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce terrain ?')">
+                                                <!-- Icône pour supprimer un terrain -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                </svg>
+                                                Supprimer
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <!-- Section "Mes réservations" -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-semibold text-blue-800 mb-4 flex items-center">
+                    <!-- Icône pour la section "Mes réservations" -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h16v16H4V4z"></path>
+                    </svg>
+                    Mes réservations
+                </h2>
+                <a href="{{ path('app_reservation_terrains') }}" class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 flex items-center">
+                    <!-- Icône pour réserver un terrain -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Réserver un terrain
+                </a>
+                {% if reservations is empty %}
+                    <p class="text-gray-600 mt-4">Aucune réservation trouvée.</p>
+                {% else %}
+                    <ul class="mt-4 space-y-4">
+                        {% for reservation in reservations %}
+                            <li class="bg-gray-50 p-4 rounded-lg shadow-sm">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <span class="text-lg font-medium text-gray-800">Réservation #{{ reservation.id }}</span> - <span class="text-gray-600">Terrain : {{ reservation.terrain.name }} ({{ reservation.dateDebut|date('d/m/Y H:i') }} - {{ reservation.dateFin|date('d/m/Y H:i') }})</span>
+                                    </div>
+                                    <div class="space-x-2">
+                                        <a href="{{ path('app_reservation_edit', { id: reservation.id }) }}" class="text-yellow-600 hover:text-yellow-700 flex items-center">
+                                            <!-- Icône pour modifier la réservation -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 3l4 4m0 0l-10 10H3v-4L13 3z"></path>
+                                            </svg>
+                                            Modifier
+                                        </a>
+                                        <form action="{{ path('app_reservation_delete', { id: reservation.id }) }}" method="post" class="inline">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reservation.id) }}">
+                                            <button type="submit" class="text-red-600 hover:text-red-700 flex items-center" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?')">
+                                                <!-- Icône pour supprimer la réservation -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                </svg>
+                                                Supprimer
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <a href="{{ path('app_reservation_ticket', { id: reservation.id }) }}" 
+   class="text-green-600 hover:text-green-700 flex items-center">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+    </svg>
+    Télécharger le ticket
+</a>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
